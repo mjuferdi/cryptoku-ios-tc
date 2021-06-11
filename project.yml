@@ -1,0 +1,143 @@
+## MARK: - Project Name
+name: Cryptoku
+
+
+## MARK: - Configs Section
+configs:
+    DEV-Debug   : debug
+    DEV-Release : release
+    STA-Debug   : debug
+    STA-Release : release
+    PRO-Debug   : debug
+    PRO-Release : release
+
+## MARK: - Option Section
+options:
+    xcodeVersion             : '12.4'
+    deploymentTarget         : '11.0'
+    groupSortPosition        : down
+    generateEmptyDirectories : true
+    minimumXcodeGenVersion   : '2.18.0'
+    preGenCommand            : ./pregencommand.sh
+    postGenCommand           : pod install
+
+## MARK: - Target Section
+targets:
+    Cryptoku:
+        type: application
+        platform: iOS
+        sources: Cryptoku
+        settings:
+            base:
+                CODE_SIGN_STYLE: Automatic
+                DEVELOPMENT_TEAM: Y8FLNHNZ29
+                EXCLUDED_ARCHS[sdk=iphonesimulator*]: arm64
+                IPHONEOS_DEPLOYMENT_TARGET: 11.0
+                INFOPLIST_FILE: Cryptoku/Resources/Info.plist
+                MOMC_NO_WARNINGS: true
+                TARGETED_DEVICE_FAMILY: 1
+            configs:
+                DEV-Debug:
+                    IPHONEOS_DEPLOYMENT_TARGET: 13.0
+                    PRODUCT_BUNDLE_IDENTIFIER: io.marmj.cryptoku.dev
+                    PRODUCT_NAME: DEV Cryptoku
+                    SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEV
+                DEV-Release:
+                    PRODUCT_BUNDLE_IDENTIFIER: io.marmj.cryptoku.dev
+                    PRODUCT_NAME: DEV Cryptoku
+                    SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEV
+                STA-Debug:
+                    PRODUCT_BUNDLE_IDENTIFIER: io.marmj.cryptoku.sta
+                    PRODUCT_NAME: STA Cryptoku
+                    SWIFT_ACTIVE_COMPILATION_CONDITIONS: STA
+                STA-Release:
+                    PRODUCT_BUNDLE_IDENTIFIER: io.marmj.cryptoku.sta
+                    PRODUCT_NAME: STA Cryptoku
+                    SWIFT_ACTIVE_COMPILATION_CONDITIONS: STA
+                PRO-Debug:
+                    PRODUCT_BUNDLE_IDENTIFIER: io.marmj.cryptoku
+                    PRODUCT_NAME: Cryptoku
+                    SWIFT_ACTIVE_COMPILATION_CONDITIONS: PRO
+                PRO-Release:
+                    PRODUCT_BUNDLE_IDENTIFIER: io.marmj.cryptoku
+                    PRODUCT_NAME: Cryptoku
+                    SWIFT_ACTIVE_COMPILATION_CONDITIONS: PRO
+        info:
+            path: Cryptoku/Resources/Info.plist
+            properties:
+                CFBundleDevelopmentRegion: $(DEVELOPMENT_LANGUAGE)
+                CFBundleExecutable: $(EXECUTABLE_NAME)
+                CFBundleInfoDictionaryVersion: 6.0
+                CFBundlePackageType: $(PRODUCT_BUNDLE_PACKAGE_TYPE)
+                CFBundleShortVersionString: 1.0.0
+                CGBundleVersion: "1"
+                ITSAppUsesNonExemptEncryption: false
+                LSRequiresIPhoneOS: true
+                UIApplicationSupportsIndirectInputEvents: true
+                UILaunchStoryboardName: LaunchScreen
+                UIMainStoryboardFile: LaunchScreen
+                UIRequiredDeviceCapabilities:
+                    - armv7
+                UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+                NSCameraUsageDescription: "This lets you to take picture and use the image"
+                NSPhotoLibraryUsageDescription: "This lets you upload photo you have just taken or the ones in your photos gallery"
+    CryptokuTests:
+        type: bundle.unit-test
+        platform: iOS
+        sources:
+            - path: CryptokuTests
+        settings:
+            INFOPLIST_FILE: CryptokuTests/Info.plist
+            TEST_TARGET_NAME: Cryptoku
+            TEST_HOST: $(BUILT_PRODUCTS_DIR)/DEV Cryptoku.app/DEV Cryptoku
+
+## MARK: - Scheme Section
+schemes:
+    DEV-Cryptoku:
+        build:
+            targets:
+                Cryptoku: [run, archive]
+        run:
+            config: DEV-Debug
+        test:
+            config: DEV-Debug
+        profile:
+            config: DEV-Release
+        analyze:
+            config: DEV-Debug
+        archive:
+            config: DEV-Release
+            customArchiveName: DEV Cryptoku
+            revealArchiveInOrganizer: true
+    STA-Cryptoku:
+        build:
+            targets:
+                Cryptoku: [run, archive]
+        run:
+            config: STA-Debug
+        test:
+            config: STA-Debug
+        profile:
+            config: STA-Release
+        analyze:
+            config: STA-Debug
+        archive:
+            config: STA-Release
+            customArchiveName: STA Cryptoku
+            revealArchiveInOrganizer: true
+    PRO-Cryptoku:
+        build:
+            targets:
+                Cryptoku: [run, archive]
+        run:
+            config: PRO-Debug
+        test:
+            config: PRO-Debug
+        profile:
+            config: PRO-Release
+        analyze:
+            config: PRO-Debug
+        archive:
+            config: PRO-Release
+            customArchiveName: PRO Cryptoku
+            revealArchiveInOrganizer: true
