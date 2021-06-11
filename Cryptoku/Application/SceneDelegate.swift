@@ -5,7 +5,7 @@
 //  Created by Mario MJ on 11.06.21.
 //
 
-import UIKit
+/*import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -48,5 +48,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
 
-}
+}*/
 
