@@ -5,7 +5,7 @@
 //  Created by Mario MJ on 13.06.21.
 //  Copyright (c) 2021 All rights reserved.
 
-import Foundation
+import UIKit
 
 // MARK: CPNewsViewModelResponse
 enum CPNewsViewModelResponse {
@@ -29,13 +29,15 @@ struct CPNewsViewModelRoute {
 protocol CPNewsViewModelInput {
     func doCloseNewsFeed()
     func fetchNewsFeed(by categories: String)
+    func showAllertMessage(to viewController: UIViewController)
     func viewDidLoad()
 
 }
 
 // MARK: CPNewsViewModelOutput
 protocol CPNewsViewModelOutput {
-
+    var displayedAllertMessage: Observable<Bool> { get }
+    var displayedNews: Observable<NewsDomain?> { get }
 }
 
 // MARK: CPNewsViewModel
@@ -54,11 +56,13 @@ final class DefaultCPNewsViewModel: CPNewsViewModel {
 
 
     // MARK: Common Variable
-
+    var errorMessage: String = ""
     
 
     // MARK: Output ViewModel
-    
+    let displayedAllertMessage = Observable<Bool>(false)
+    let displayedNews = Observable<NewsDomain?>(nil)
+
 
     // MARK: Init Function
     init(requestValue: CPNewsViewModelRequestValue,
@@ -87,13 +91,16 @@ extension DefaultCPNewsViewModel {
         self.fetchNewsFeedByCategoriesUseCase.execute(request) { (result) in
             switch result {
             case .success(let response):
-                print("NEIN", response.newsFeed)
+                self.displayedNews.value = response.newsFeed
             case .failure(let error):
-                print("NEIN", error)
-                //self.displayedAllertMessage.value = true
-                //self.errorMessage = error.localizedDescription
+                self.displayedAllertMessage.value = true
+                self.errorMessage = error.localizedDescription
             }
         }
+    }
+    
+    func showAllertMessage(to viewController: UIViewController) {
+        viewController.showAllertMessage(.error, title: "", body: self.errorMessage, cornerRadius: 10, completion: nil)
     }
     
     func viewDidLoad() {

@@ -15,7 +15,7 @@ final class CPNewsController: UIViewController {
     var viewModel: CPNewsViewModel!
 
     // MARK: Common Variable
-
+    var newsDomain: NewsDomain!
 
     // MARK: Create Function
     class func create(with viewModel: CPNewsViewModel) -> CPNewsController {
@@ -34,7 +34,6 @@ final class CPNewsController: UIViewController {
         super.viewDidLoad()
         self.bind(to: self.viewModel)
         self.viewModel.viewDidLoad()
-        self.setupTableViewFunctionality()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,17 +50,38 @@ final class CPNewsController: UIViewController {
 
     // MARK: Bind ViewModel Function
     private func bind(to viewModel: CPNewsViewModel) {
+        viewModel.displayedAllertMessage.observe(on: self) { [unowned self] in
+            self.observeDisplayedAllertMessageViewModel($0)
+        }
+        viewModel.displayedNews.observe(on: self) { [unowned self] in
+            guard let value = $0 else { return }
+            self.observeDisplayedNewsViewModel(value)
+        }
     }
     
     private func setupTableViewFunctionality() {
         self._view.tableView.dataSource = self
         self._view.tableView.delegate = self
+        self._view.tableView.reloadData()
     }
     
 }
 
 // MARK: Observe ViewModel Function
 extension CPNewsController {
+    
+    func observeDisplayedAllertMessageViewModel(_ show: Bool) {
+        if show {
+            self.viewModel.showAllertMessage(to: self)
+        }
+    }
+    
+    func observeDisplayedNewsViewModel(_ news: NewsDomain) {
+        self.newsDomain = news
+        DispatchQueue.main.async {
+            self.setupTableViewFunctionality()
+        }
+    }
     
 }
 

@@ -11,7 +11,7 @@ import SnapKit
 class CryptoInfoTableCell: UITableViewCell {
     
     static let reuseIdentifier: String = String(describing: CryptoInfoTableCell.self)
-    static let height = CGFloat(65)
+    static let height = CGFloat(69)
     
     lazy var cryptoNameLabel: UILabel = {
         let label = UILabel()
@@ -80,11 +80,11 @@ class CryptoInfoTableCell: UITableViewCell {
     private func subviewMakeConstraint() {
         self.cryptoShortNameLabel.snp.makeConstraints {
             $0.leading.equalTo(self.safeAreaLayoutGuide).inset(15)
-            $0.top.equalTo(self.safeAreaLayoutGuide).inset(10)
+            $0.top.equalTo(self.safeAreaLayoutGuide).inset(12)
         }
         self.cryptoNameLabel.snp.makeConstraints {
             $0.leading.equalTo(self.cryptoShortNameLabel)
-            $0.bottom.equalTo(self.safeAreaLayoutGuide).inset(10)
+            $0.bottom.equalTo(self.safeAreaLayoutGuide).inset(12)
             $0.trailing.lessThanOrEqualTo(self.cryptoPriceChangeLabel).inset(10)
         }
         self.cryptoPriceLabel.snp.makeConstraints {
@@ -112,7 +112,6 @@ class CryptoInfoTableCell: UITableViewCell {
         let changeHour = data[indexPath.row].display?.usd?.changehour
         let changePctHour = data[indexPath.row].display?.usd?.changepcthour ?? "0.0%"
         let formatChangeHour = changeHour?.trimmingCharacters(in: CharacterSet(charactersIn: "$")) ?? "0.0"
-        print(formatChangeHour) // nein
         let priceChangePerHour = formatChangeHour.contains("-") ? "\(formatChangeHour)(\(changePctHour))%" : "+\(formatChangeHour)(\(changePctHour))%"
         self.cryptoPriceChangeContainerView.backgroundColor = formatChangeHour.contains("-") ? .systemRed : .systemGreen
         self.cryptoPriceChangeLabel.text = priceChangePerHour

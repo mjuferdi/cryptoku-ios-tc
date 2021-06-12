@@ -16,7 +16,6 @@ class NewsTableCell: UITableViewCell {
         label.font = UIFont.systemFont(ofSize: 14)
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
-        label.text = "Texas banks have received greenlight to store bitcoin and other crypto-assets for customers."
         return label
     }()
     lazy var newsTitleLabel: UILabel = {
@@ -24,13 +23,11 @@ class NewsTableCell: UITableViewCell {
         label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 2
-        label.text = "Texas Banks Can Now Provide Bitcoin Custody Services For Clients"
         return label
     }()
     lazy var sourceInfoLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 10)
-        label.text = "Crypto Potato"
         return label
     }()
     
@@ -44,14 +41,13 @@ class NewsTableCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // nein todo
-//    override func prepareForReuse() {
-//        super.prepareForReuse()
-//        self.newsBodyLabel.text = ""
-//        self.newsTitleLabel.text = ""
-//        self.sourceInfoLabel.text = ""
-//
-//    }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.newsBodyLabel.text = ""
+        self.newsTitleLabel.text = ""
+        self.sourceInfoLabel.text = ""
+
+    }
     
     private func subviewDidInit() {
         self.contentView.addSubview(self.newsBodyLabel)
@@ -62,7 +58,7 @@ class NewsTableCell: UITableViewCell {
     private func subviewMakeConstraint() {
         self.sourceInfoLabel.snp.makeConstraints {
             $0.leading.trailing.equalTo(self.contentView).inset(15)
-            $0.top.equalTo(self.contentView).inset(10)
+            $0.top.equalTo(self.contentView).inset(12)
         }
         self.newsTitleLabel.snp.makeConstraints {
             $0.leading.trailing.equalTo(self.sourceInfoLabel)
@@ -71,11 +67,16 @@ class NewsTableCell: UITableViewCell {
         self.newsBodyLabel.snp.makeConstraints {
             $0.leading.trailing.equalTo(self.sourceInfoLabel)
             $0.top.equalTo(self.newsTitleLabel.snp.bottom).offset(6)
-            $0.bottom.equalTo(self.contentView).inset(10)
+            $0.bottom.equalTo(self.contentView).inset(12)
             $0.height.greaterThanOrEqualTo(20)
         }
         
-       
+    }
+    
+    func configureCell(with data: [NewsData], indexPath: IndexPath) {
+        self.newsBodyLabel.text = data[indexPath.row].body
+        self.newsTitleLabel.text = data[indexPath.row].title
+        self.sourceInfoLabel.text = data[indexPath.row].sourceInfo?.name
     }
     
 }

@@ -54,14 +54,14 @@ final class CPTopListController: UIViewController {
     // MARK: Bind ViewModel Function
     private func bind(to viewModel: CPTopListViewModel) {
         viewModel.displayedAllertMessage.observe(on: self) { [unowned self] in
-            self.observeDisplayedAllertMessage($0)
+            self.observeDisplayedAllertMessageViewModel($0)
         }
         viewModel.displayedToplist.observe(on: self) { [unowned self] in
             guard let value = $0 else { return }
             self.observeDisplayedToplistViewModel(value)
         }
         viewModel.displayedLoadingState.observe(on: self) { [unowned self] in
-            self.observeDisplayedLoadingState($0)
+            self.observeDisplayedLoadingStateViewModel($0)
         }
     }
     
@@ -91,7 +91,7 @@ final class CPTopListController: UIViewController {
 
 // MARK: Observe ViewModel Function
 extension CPTopListController {
-    func observeDisplayedAllertMessage(_ show: Bool) {
+    func observeDisplayedAllertMessageViewModel(_ show: Bool) {
         if show {
             self.viewModel.showAllertMessage(to: self)
         }
@@ -104,7 +104,7 @@ extension CPTopListController {
         }
     }
     
-    func observeDisplayedLoadingState(_ bool: Bool) {
+    func observeDisplayedLoadingStateViewModel(_ bool: Bool) {
         if refreshControl.isRefreshing == true {
             refreshControl.endRefreshing()
         }
