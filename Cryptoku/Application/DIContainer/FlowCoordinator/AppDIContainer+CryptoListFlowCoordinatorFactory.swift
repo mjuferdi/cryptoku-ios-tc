@@ -8,6 +8,18 @@
 import UIKit
 
 extension AppDIContainer: CryptoListFlowCoordinatorFactory {
+    
+    func makeCPNewsController(requestValue: CPNewsViewModelRequestValue, route: CPNewsViewModelRoute) -> UIViewController {
+        return CPNewsController.create(with: self.makeCPNewsViewModel(requestValue: requestValue, route: route))
+    }
+    
+    private func makeCPNewsViewModel(requestValue: CPNewsViewModelRequestValue, route: CPNewsViewModelRoute) -> CPNewsViewModel {
+        return DefaultCPNewsViewModel(
+            requestValue: requestValue,
+            route: route,
+            fetchNewsFeedByCategoriesUseCase: self.makeFetchNewsFeedByCategoriesUseCase())
+    }
+    
     func makeCPTopListViewController(requestValue: CPTopListViewModelRequestValue, route: CPTopListViewModelRoute) -> UIViewController {
         return CPTopListController.create(with: self.makeCPTopListViewModel(requestValue: requestValue, route: route))
     }

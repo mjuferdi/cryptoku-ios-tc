@@ -8,6 +8,11 @@
 import Foundation
 
 extension AppDIContainer: RepositoryFactory {
+    
+    func makeNewsFeedRepository() -> NewsFeedRepository {
+        return DefaultNewsFeedRepository(newsFeedStorage: self.newsFeedStorage)
+    }
+    
     func makeToplistTopTierRepository() -> ToplistTopTierRepository {
         return DefaultToplistTopTierRepository(toplistTopTierStorage: self.toplistTopTierStorage)
     }

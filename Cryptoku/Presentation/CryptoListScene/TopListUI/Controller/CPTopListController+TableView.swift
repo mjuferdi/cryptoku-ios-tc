@@ -23,8 +23,8 @@ extension CPTopListController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // nein todo
-        print("nein", indexPath.row)
+        guard let categories = self.toplistDomain.data?[indexPath.row].coinInfo?.name else { return }
+        self.viewModel.showCurrencyNews(categories: categories)
     }
     
     private func configCell(for tableview: UITableView, indexPath: IndexPath) -> UITableViewCell {

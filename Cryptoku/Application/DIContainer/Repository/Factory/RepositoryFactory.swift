@@ -8,5 +8,6 @@
 import Foundation
 
 public protocol RepositoryFactory {
+    func makeNewsFeedRepository() -> NewsFeedRepository
     func makeToplistTopTierRepository() -> ToplistTopTierRepository
 }

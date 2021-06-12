@@ -12,8 +12,8 @@ public struct ToplistTopTierDomain: Codable {
     let message: String?
     let type: Int?
     let metaData: MetaData?
-    let sponsoredData: [SponsoredDatum]?
-    let data: [Datum]?
+    let sponsoredData: [SponsoredData]?
+    let data: [CoinData]?
     let rateLimit: RateLimit?
     let hasWarning: Bool?
 
@@ -28,8 +28,8 @@ public struct ToplistTopTierDomain: Codable {
     }
 }
 
-// MARK: - Datum
-struct Datum: Codable {
+// MARK: - CoinData
+struct CoinData: Codable {
     let coinInfo: CoinInfo?
     let raw: Raw?
     let display: Display?
@@ -299,8 +299,8 @@ struct MetaData: Codable {
 struct RateLimit: Codable {
 }
 
-// MARK: - SponsoredDatum
-struct SponsoredDatum: Codable {
+// MARK: - SponsoredData
+struct SponsoredData: Codable {
     let coinInfo: CoinInfo?
 
     enum CodingKeys: String, CodingKey {

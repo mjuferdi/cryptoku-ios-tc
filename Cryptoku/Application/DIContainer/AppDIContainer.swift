@@ -32,6 +32,7 @@ final class AppDIContainer {
     }()
     
     // MARK: Storage
+    lazy var newsFeedStorage: NewsFeedStorage = DefaultNewsFeedStorage(cryptoCompareNetworkService: self.cryptoCompareNetworkService)
     lazy var toplistTopTierStorage: ToplistTopTierStorage = DefaultToplistTopTierStorage(cryptoCompareNetworkService: self.cryptoCompareNetworkService)
     
     // MARK: Init Function
