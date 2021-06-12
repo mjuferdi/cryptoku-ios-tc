@@ -33,6 +33,7 @@ final class CPTopListController: UIViewController {
         super.viewDidLoad()
         self.bind(to: self.viewModel)
         self.viewModel.viewDidLoad()
+        self.setupFunctionality()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,6 +52,11 @@ final class CPTopListController: UIViewController {
 
     // MARK: Bind ViewModel Function
     private func bind(to viewModel: CPTopListViewModel) {
+    }
+    
+    private func setupFunctionality() {
+        self._view.tableView.dataSource = self
+        self._view.tableView.delegate = self
     }
     
 }

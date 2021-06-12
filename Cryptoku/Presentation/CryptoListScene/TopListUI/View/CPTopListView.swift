@@ -22,6 +22,7 @@ protocol CPTopListViewFunction {
 
 // MARK: CPTopListViewSubview
 protocol CPTopListViewSubview {
+    var tableView: CryptoInfoTableView { get set }
 }
 
 // MARK: CPTopListViewVariable
@@ -36,6 +37,7 @@ protocol CPTopListView: CPTopListViewFunction, CPTopListViewSubview, CPTopListVi
 final class DefaultCPTopListView: UIView, CPTopListView {
 
     // MARK: CPTopListViewSubview
+    lazy var tableView: CryptoInfoTableView = CryptoInfoTableView(frame: .zero, style: .plain)
 
     // MARK: CPTopListViewVariable
     weak var delegate: CPTopListViewDelegate?
@@ -58,9 +60,14 @@ final class DefaultCPTopListView: UIView, CPTopListView {
 extension DefaultCPTopListView {
     
     func subviewDidAdd() {
+        self.addSubview(self.tableView)
     }
     
     func subviewConstraintDidMake() {
+        self.tableView.snp.makeConstraints {
+            $0.edges.equalTo(self.safeAreaLayoutGuide
+            )
+        }
     }
     
     func viewDidInit() {
@@ -75,7 +82,7 @@ extension DefaultCPTopListView {
     func viewWillAppear(navigationBar: UINavigationBar?,
                         navigationItem: UINavigationItem,
                         tabBarController: UITabBarController?) {
-        self.backgroundColor = .systemGreen
+        self.backgroundColor = .white
     }
     
     func viewWillDisappear() {
