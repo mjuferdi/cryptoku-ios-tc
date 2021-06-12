@@ -22,11 +22,13 @@ struct CPTopListViewModelRequestValue {
 
 // MARK: CPTopListViewModelRoute
 struct CPTopListViewModelRoute {
+    var startCryptoListFlow: ((_ instructor: CryptoListFlowCoordinatorInstructor) -> Void)
 }
 
 // MARK: CPTopListViewModelInput
 protocol CPTopListViewModelInput {
     func fetchTopListCryptoCurrency()
+    func showCurrencyNews(categories: String)
     func showAllertMessage(to viewController: UIViewController)
     func viewDidLoad()
 }
@@ -92,6 +94,13 @@ extension DefaultCPTopListViewModel {
             }
             self.displayedLoadingState.value = true
         }
+    }
+    
+    func showCurrencyNews(categories: String) {
+        let requestValue = CPNewsViewModelRequestValue(categories: categories)
+        let instructor = CryptoListFlowCoordinatorInstructor.presentNewsUI(requestValue: requestValue)
+        self.route.startCryptoListFlow(instructor)
+        
     }
     
     func showAllertMessage(to viewController: UIViewController) {
