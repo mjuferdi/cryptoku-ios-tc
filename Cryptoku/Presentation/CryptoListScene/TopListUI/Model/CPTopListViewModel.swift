@@ -5,7 +5,8 @@
 //  Created by Mario MJ on 11.06.21.
 //  Copyright (c) 2021 All rights reserved.
 
-import Foundation
+import Alamofire
+import UIKit
 
 // MARK: CPTopListViewModelResponse
 enum CPTopListViewModelResponse {
@@ -25,7 +26,7 @@ struct CPTopListViewModelRoute {
 
 // MARK: CPTopListViewModelInput
 protocol CPTopListViewModelInput {
-
+    func fetchTopListCryptoCurrency()
     func viewDidLoad()
 
 }
@@ -47,7 +48,7 @@ final class DefaultCPTopListViewModel: CPTopListViewModel {
     let route: CPTopListViewModelRoute
 
     // MARK: UseCase Variable
-
+    let fetchTopListCryptoCurrencyUseCase: FetchTopListCryptoCurrencyUseCase
 
 
     // MARK: Common Variable
@@ -59,9 +60,11 @@ final class DefaultCPTopListViewModel: CPTopListViewModel {
 
     // MARK: Init Function
     init(requestValue: CPTopListViewModelRequestValue,
-         route: CPTopListViewModelRoute) {
+         route: CPTopListViewModelRoute,
+         fetchTopListCryptoCurrencyUseCase: FetchTopListCryptoCurrencyUseCase) {
         self.requestValue = requestValue
         self.route = route
+        self.fetchTopListCryptoCurrencyUseCase = fetchTopListCryptoCurrencyUseCase
     }
     
 }
@@ -69,7 +72,23 @@ final class DefaultCPTopListViewModel: CPTopListViewModel {
 // MARK: Input ViewModel
 extension DefaultCPTopListViewModel {
     
-    func viewDidLoad() {
+    func fetchTopListCryptoCurrency() {
+        let parameter: [String: Any] = [
+            "tsym": "USD",
+            "page": 1
+        ]
+        let request = FetchTopListCryptoCurrencyUseCaseRequest(parameter: parameter)
+        self.fetchTopListCryptoCurrencyUseCase.execute(request) { (result) in
+            switch result {
+            case .success(let response):
+                print("NEIN" , response)
+            case .failure(let error):
+                print("NEIN" , error.localizedDescription)
+            }
+        }
     }
     
+    func viewDidLoad() {
+        self.fetchTopListCryptoCurrency()
+    }
 }

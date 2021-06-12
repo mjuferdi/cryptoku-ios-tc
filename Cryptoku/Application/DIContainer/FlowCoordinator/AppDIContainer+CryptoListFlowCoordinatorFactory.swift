@@ -13,7 +13,10 @@ extension AppDIContainer: CryptoListFlowCoordinatorFactory {
     }
     
     private func makeCPTopListViewModel(requestValue: CPTopListViewModelRequestValue, route: CPTopListViewModelRoute) -> CPTopListViewModel {
-        return DefaultCPTopListViewModel(requestValue: requestValue, route: route)
+        return DefaultCPTopListViewModel(
+            requestValue: requestValue,
+            route: route,
+            fetchTopListCryptoCurrencyUseCase: self.makeFetchTopListCryptoCurrencyUseCase())
     }
     
 }

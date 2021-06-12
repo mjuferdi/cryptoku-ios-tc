@@ -7,4 +7,6 @@
 
 import Foundation
 
-public protocol UseCaseFactory { }
+public protocol UseCaseFactory {
+    func makeFetchTopListCryptoCurrencyUseCase() -> FetchTopListCryptoCurrencyUseCase
+}

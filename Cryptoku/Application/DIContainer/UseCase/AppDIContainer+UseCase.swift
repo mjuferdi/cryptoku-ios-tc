@@ -7,4 +7,8 @@
 
 import Foundation
 
-extension AppDIContainer: UseCaseFactory { }
+extension AppDIContainer: UseCaseFactory {
+    func makeFetchTopListCryptoCurrencyUseCase() -> FetchTopListCryptoCurrencyUseCase {
+        return DefaultFetchTopListCryptoCurrencyUseCase(repository: self.makeToplistTopTierRepository())
+    }
+}
