@@ -112,7 +112,7 @@ class CryptoInfoTableCell: UITableViewCell {
         let changeHour = data[indexPath.row].display?.usd?.changehour
         let changePctHour = data[indexPath.row].display?.usd?.changepcthour ?? "0.0%"
         let formatChangeHour = changeHour?.trimmingCharacters(in: CharacterSet(charactersIn: "$")) ?? "0.0"
-        let priceChangePerHour = formatChangeHour.contains("-") ? "\(formatChangeHour)(\(changePctHour))%" : "+\(formatChangeHour)(\(changePctHour))%"
+        let priceChangePerHour = formatChangeHour.contains("-") ? "\(formatChangeHour)(\(changePctHour)%)" : "+\(formatChangeHour)(\(changePctHour)%)"
         self.cryptoPriceChangeContainerView.backgroundColor = formatChangeHour.contains("-") ? .systemRed : .systemGreen
         self.cryptoPriceChangeLabel.text = priceChangePerHour
     }

@@ -31,7 +31,7 @@ public struct CryptoCompareNetworkService {
     public func fetchToplistTopTier(
         parameters: [String: Any]?,
         success: NetworkSuccessHandler?,
-        failure: NetworkFailureHandler?){
+        failure: NetworkFailureHandler?) {
         
         let headers = [
             "Accept": "application/json"
