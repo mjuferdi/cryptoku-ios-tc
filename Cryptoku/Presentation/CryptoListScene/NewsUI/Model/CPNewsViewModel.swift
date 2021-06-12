@@ -28,6 +28,7 @@ struct CPNewsViewModelRoute {
 // MARK: CPNewsViewModelInput
 protocol CPNewsViewModelInput {
     func doCloseNewsFeed()
+    func fetchNewsFeed(by categories: String)
     func viewDidLoad()
 
 }
@@ -49,7 +50,7 @@ final class DefaultCPNewsViewModel: CPNewsViewModel {
     let route: CPNewsViewModelRoute
 
     // MARK: UseCase Variable
-
+    let fetchNewsFeedByCategoriesUseCase: FetchNewsFeedByCategoriesUseCase
 
 
     // MARK: Common Variable
@@ -61,9 +62,11 @@ final class DefaultCPNewsViewModel: CPNewsViewModel {
 
     // MARK: Init Function
     init(requestValue: CPNewsViewModelRequestValue,
-         route: CPNewsViewModelRoute) {
+         route: CPNewsViewModelRoute,
+         fetchNewsFeedByCategoriesUseCase: FetchNewsFeedByCategoriesUseCase) {
         self.requestValue = requestValue
         self.route = route
+        self.fetchNewsFeedByCategoriesUseCase = fetchNewsFeedByCategoriesUseCase
     }
     
 }
@@ -74,8 +77,27 @@ extension DefaultCPNewsViewModel {
     func doCloseNewsFeed() {
         self.route.dismiss()
     }
+    
+    func fetchNewsFeed(by categories: String) {
+        let parameter: [String: Any] = [
+            "lang": "EN",
+            "categories": categories
+        ]
+        let request = FetchNewsFeedByCategoriesUseCaseRequest(parameter: parameter)
+        self.fetchNewsFeedByCategoriesUseCase.execute(request) { (result) in
+            switch result {
+            case .success(let response):
+                print("NEIN", response.newsFeed)
+            case .failure(let error):
+                print("NEIN", error)
+                //self.displayedAllertMessage.value = true
+                //self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+    
     func viewDidLoad() {
-        print("NEIN", self.requestValue.categories)
+        self.fetchNewsFeed(by: self.requestValue.categories)
     }
     
 }

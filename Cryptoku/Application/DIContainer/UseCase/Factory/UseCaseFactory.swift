@@ -8,5 +8,6 @@
 import Foundation
 
 public protocol UseCaseFactory {
+    func makeFetchNewsFeedByCategoriesUseCase() -> FetchNewsFeedByCategoriesUseCase
     func makeFetchTopListCryptoCurrencyUseCase() -> FetchTopListCryptoCurrencyUseCase
 }

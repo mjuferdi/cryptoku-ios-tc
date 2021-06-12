@@ -104,7 +104,7 @@ class CryptoInfoTableCell: UITableViewCell {
        
     }
     
-    func configureCell(with data: [Datum], indexPath: IndexPath) {
+    func configureCell(with data: [CoinData], indexPath: IndexPath) {
         self.cryptoShortNameLabel.text = data[indexPath.row].coinInfo?.name?.uppercased()
         self.cryptoNameLabel.text
             = data[indexPath.row].coinInfo?.fullName?.capitalized

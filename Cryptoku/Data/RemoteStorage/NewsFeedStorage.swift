@@ -1,42 +1,37 @@
 //
-//  ToplistTopTierStorage.swift
+//  NewsFeedStorage.swift
 //  Cryptoku
 //
-//  Created by Mario MJ on 12.06.21.
+//  Created by Mario MJ on 13.06.21.
 //
 
 import Alamofire
 import Foundation
 
-
-public protocol ToplistTopTierStorage {
-    func fetchToplistTopTier(parameter: [String: Any], completion: @escaping (Result<ToplistTopTierDomain>) -> Void)
+public protocol NewsFeedStorage {
+    func fetchNewsByCategory(parameter: [String: Any], completion: @escaping (Result<NewsDomain>) -> Void)
 }
 
-public final class DefaultToplistTopTierStorage {
+public final class DefaultNewsFeedStorage {
     let cryptoCompareNetworkService: CryptoCompareNetworkService
-    
     public init(cryptoCompareNetworkService: CryptoCompareNetworkService) {
         self.cryptoCompareNetworkService = cryptoCompareNetworkService
     }
-    
 }
 
-extension DefaultToplistTopTierStorage: ToplistTopTierStorage {
-    
-    public func fetchToplistTopTier(parameter: [String : Any], completion: @escaping (Result<ToplistTopTierDomain>) -> Void) {
-        
+extension DefaultNewsFeedStorage: NewsFeedStorage {
+    public func fetchNewsByCategory(parameter: [String : Any], completion: @escaping (Result<NewsDomain>) -> Void) {
         let errorMessage = CommonString.failedFetchData()
         let error = NSError.create(with: errorMessage)
- 
-        self.cryptoCompareNetworkService.fetchToplistTopTier(parameters: parameter) { (response) in
+        
+        self.cryptoCompareNetworkService.fetchNewsByCategory(parameters: parameter) { (response) in
             guard let responseValue = response?.result.value else {
                 return completion(.failure(error))
             }
             do {
                 let jsonData = try JSONSerialization.data(withJSONObject: responseValue, options: .prettyPrinted)
-                let toplistTopTierDomain = try JSONDecoder().decode(ToplistTopTierDomain.self, from: jsonData)
-                completion(.success(toplistTopTierDomain))
+                let newsDomain = try JSONDecoder().decode(NewsDomain.self, from: jsonData)
+                completion(.success(newsDomain))
             }
             catch {  completion(.failure(error)) }
         } failure: { (errorResponse) in
@@ -50,10 +45,9 @@ extension DefaultToplistTopTierStorage: ToplistTopTierStorage {
             }
             catch { completion(.failure(error)) }
         }
+
         
     }
     
-
+    
 }
-
-
