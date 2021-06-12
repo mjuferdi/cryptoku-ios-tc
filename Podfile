@@ -1,11 +1,17 @@
 platform :ios, '11.0'
 
+def ui_pods
+  pod 'SwiftMessages'
+end
+
 target 'Cryptoku' do
   use_frameworks!
 
-  pod 'Alamofire', '~> 5.4'
+  pod 'Alamofire', '4.9.1'
   pod 'SnapKit', '~> 5.0.0'
-
+  pod 'SwiftyJSON'
+  
+  ui_pods
 
 
   target 'CryptokuTests' do

@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import Cryptoku
+@testable import DEV_Cryptoku
 
 class CryptokuTests: XCTestCase {
 
