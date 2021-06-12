@@ -1,5 +1,5 @@
 //
-//  CryptoCompareAPIEndpoint.swift
+//  CryptoCompareNetworkService.swift
 //  Cryptoku
 //
 //  Created by Mario MJ on 12.06.21.
@@ -15,6 +15,10 @@ public struct CryptoCompareNetworkService {
     
     public static let baseURL = "https://min-api.cryptocompare.com/data/top/totaltoptiervolfull"
     public static let method: HTTPMethod = .get
+    let session: SessionManager
+    public init(session: SessionManager = .default) {
+        self.session = session
+    }
     
     // MARK: Toplist by 24H Top Tier Volume Full Data
     public func fetchToplistTopTier(

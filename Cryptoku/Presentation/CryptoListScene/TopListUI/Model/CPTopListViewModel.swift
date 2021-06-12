@@ -27,13 +27,15 @@ struct CPTopListViewModelRoute {
 // MARK: CPTopListViewModelInput
 protocol CPTopListViewModelInput {
     func fetchTopListCryptoCurrency()
+    func showAllertMessage(to viewController: UIViewController)
     func viewDidLoad()
-
 }
 
 // MARK: CPTopListViewModelOutput
 protocol CPTopListViewModelOutput {
-
+    var displayedAllertMessage: Observable<Bool> { get }
+    var displayedToplist: Observable<ToplistTopTierDomain?> { get }
+    var displayedLoadingState: Observable<Bool> { get }
 }
 
 // MARK: CPTopListViewModel
@@ -52,11 +54,13 @@ final class DefaultCPTopListViewModel: CPTopListViewModel {
 
 
     // MARK: Common Variable
-
+    var errorMessage: String = ""
     
 
     // MARK: Output ViewModel
-    
+    let displayedAllertMessage = Observable<Bool>(false)
+    let displayedToplist = Observable<ToplistTopTierDomain?>(nil)
+    let displayedLoadingState = Observable<Bool>(false)
 
     // MARK: Init Function
     init(requestValue: CPTopListViewModelRequestValue,
@@ -75,17 +79,23 @@ extension DefaultCPTopListViewModel {
     func fetchTopListCryptoCurrency() {
         let parameter: [String: Any] = [
             "tsym": "USD",
-            "page": 1
+            "limit": 50
         ]
         let request = FetchTopListCryptoCurrencyUseCaseRequest(parameter: parameter)
-        self.fetchTopListCryptoCurrencyUseCase.execute(request) { (result) in
+        self.fetchTopListCryptoCurrencyUseCase.execute(request) { [unowned self] (result) in
             switch result {
             case .success(let response):
-                print("NEIN" , response)
+                self.displayedToplist.value = response.topList
             case .failure(let error):
-                print("NEIN" , error.localizedDescription)
+                self.displayedAllertMessage.value = true
+                self.errorMessage = error.localizedDescription
             }
+            self.displayedLoadingState.value = true
         }
+    }
+    
+    func showAllertMessage(to viewController: UIViewController) {
+        viewController.showAllertMessage(.error, title: "", body: self.errorMessage, cornerRadius: 10, completion: nil)
     }
     
     func viewDidLoad() {

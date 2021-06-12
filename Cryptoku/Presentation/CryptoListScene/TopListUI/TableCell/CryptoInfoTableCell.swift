@@ -35,7 +35,6 @@ class CryptoInfoTableCell: UITableViewCell {
     lazy var cryptoPriceChangeContainerView: UIView = {
         var view = UIView()
         view.makeRound()
-        view.backgroundColor = .systemRed
         return view
     }()
     lazy var cryptoPriceChangeLabel: UILabel = {
@@ -46,7 +45,6 @@ class CryptoInfoTableCell: UITableViewCell {
         label.textColor = .white
         label.text = "-23.22(-0.24%)"
         label.textAlignment = .center
-        label.backgroundColor = .systemRed
         return label
     }()
     
@@ -60,6 +58,16 @@ class CryptoInfoTableCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.cryptoNameLabel.text = ""
+        self.cryptoPriceChangeContainerView.backgroundColor = .white
+        self.cryptoPriceChangeLabel.text = ""
+        self.cryptoPriceLabel.text = ""
+        self.cryptoShortNameLabel.text = ""
+
+    }
+    
     private func subviewDidInit() {
         self.contentView.addSubview(self.cryptoShortNameLabel)
         self.contentView.addSubview(self.cryptoNameLabel)
@@ -71,7 +79,7 @@ class CryptoInfoTableCell: UITableViewCell {
     
     private func subviewMakeConstraint() {
         self.cryptoShortNameLabel.snp.makeConstraints {
-            $0.leading.equalTo(self.safeAreaLayoutGuide).inset(20)
+            $0.leading.equalTo(self.safeAreaLayoutGuide).inset(15)
             $0.top.equalTo(self.safeAreaLayoutGuide).inset(10)
         }
         self.cryptoNameLabel.snp.makeConstraints {
@@ -81,7 +89,7 @@ class CryptoInfoTableCell: UITableViewCell {
         }
         self.cryptoPriceLabel.snp.makeConstraints {
             $0.top.equalTo(self.cryptoShortNameLabel)
-            $0.trailing.equalTo(self.safeAreaLayoutGuide).inset(20)
+            $0.trailing.equalTo(self.safeAreaLayoutGuide).inset(15)
         }
         
         self.cryptoPriceChangeContainerView.snp.makeConstraints {
@@ -91,13 +99,23 @@ class CryptoInfoTableCell: UITableViewCell {
         }
         
         self.cryptoPriceChangeLabel.snp.makeConstraints {
-            $0.edges.equalTo(self.cryptoPriceChangeContainerView).inset(3)
+            $0.edges.equalTo(self.cryptoPriceChangeContainerView).inset(5)
         }
        
     }
     
-    func configureCell() {
-        // nein todo
+    func configureCell(with data: [Datum], indexPath: IndexPath) {
+        self.cryptoShortNameLabel.text = data[indexPath.row].coinInfo?.name?.uppercased()
+        self.cryptoNameLabel.text
+            = data[indexPath.row].coinInfo?.fullName?.capitalized
+        self.cryptoPriceLabel.text = data[indexPath.row].display?.usd?.price
+        let changeHour = data[indexPath.row].display?.usd?.changehour
+        let changePctHour = data[indexPath.row].display?.usd?.changepcthour ?? "0.0%"
+        let formatChangeHour = changeHour?.trimmingCharacters(in: CharacterSet(charactersIn: "$")) ?? "0.0"
+        print(formatChangeHour) // nein
+        let priceChangePerHour = formatChangeHour.contains("-") ? "\(formatChangeHour)(\(changePctHour))%" : "+\(formatChangeHour)(\(changePctHour))%"
+        self.cryptoPriceChangeContainerView.backgroundColor = formatChangeHour.contains("-") ? .systemRed : .systemGreen
+        self.cryptoPriceChangeLabel.text = priceChangePerHour
     }
     
     
