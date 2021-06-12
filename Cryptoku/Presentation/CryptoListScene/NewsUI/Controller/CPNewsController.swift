@@ -34,6 +34,7 @@ final class CPNewsController: UIViewController {
         super.viewDidLoad()
         self.bind(to: self.viewModel)
         self.viewModel.viewDidLoad()
+        self.setupTableViewFunctionality()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,6 +51,11 @@ final class CPNewsController: UIViewController {
 
     // MARK: Bind ViewModel Function
     private func bind(to viewModel: CPNewsViewModel) {
+    }
+    
+    private func setupTableViewFunctionality() {
+        self._view.tableView.dataSource = self
+        self._view.tableView.delegate = self
     }
     
 }

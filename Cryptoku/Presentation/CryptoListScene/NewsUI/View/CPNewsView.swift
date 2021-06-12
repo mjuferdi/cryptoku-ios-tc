@@ -22,7 +22,7 @@ protocol CPNewsViewFunction {
 
 // MARK: CPNewsViewSubview
 protocol CPNewsViewSubview {
-
+    var tableView: NewsTableView { get set }
 }
 
 // MARK: CPNewsViewVariable
@@ -37,6 +37,8 @@ protocol CPNewsView: CPNewsViewFunction, CPNewsViewSubview, CPNewsViewVariable {
 final class DefaultCPNewsView: UIView, CPNewsView {
 
     // MARK: CPNewsViewSubview
+    lazy var tableView: NewsTableView = NewsTableView(frame: .zero, style: .plain)
+
     lazy var titleContainerView: UIView = {
         var view = UIView()
         var label = UILabel()
@@ -102,12 +104,17 @@ extension DefaultCPNewsView {
     
     func subviewDidAdd() {
         self.addSubview(self.titleContainerView)
+        self.addSubview(self.tableView)
     }
     
     func subviewConstraintDidMake() {
         self.titleContainerView.snp.makeConstraints {
             $0.leading.top.trailing.equalTo(self.safeAreaLayoutGuide)
             $0.height.equalTo(48)
+        }
+        self.tableView.snp.makeConstraints {
+            $0.top.equalTo(self.titleContainerView.snp.bottom)
+            $0.leading.trailing.bottom.equalTo(self.safeAreaLayoutGuide)
         }
     }
     
